@@ -1,15 +1,16 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { CheckIn } from '../../enterprise/entities/check-in'
 import { CheckInAttachment } from '../../enterprise/entities/check-in-attachment'
-import { CheckInAttachmentList } from '../../enterprise/entities/check-in-attachment-list'
 import { Either, left, right } from '@/core/either'
 import { CheckInRepository } from '../repositories/check-in-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import { CheckInAttachmentsRepository } from '../repositories/check-in-attachment-repository'
+import { CheckInAttachmentList } from '../../enterprise/entities/check-in-attachment-list'
 
 interface EditCheckInUseCaseRequest {
     checkInId: string
-    details?: string
+    details?: string | null
     attachmentsIds: string[]
 }
 
@@ -21,7 +22,10 @@ type EditCheckInUseCaseResponse = Either<
 >
 
 export class EditCheckInUseCase {
-    constructor(private checkInRepository: CheckInRepository) {}
+    constructor(
+        private checkInRepository: CheckInRepository,
+        private checkInAttachmentsRepository: CheckInAttachmentsRepository
+    ) {}
 
     async execute({
         checkInId,
@@ -34,22 +38,28 @@ export class EditCheckInUseCase {
             return left(new ResourceNotFoundError())
         }
 
-        const checkin = CheckIn.create({
-            parcelForwardingId: new UniqueEntityID(parcelForwardingId),
-            customerId: new UniqueEntityID(customerId),
-            details,
-        })
+        const currentCheckinAttachments =
+            await this.checkInAttachmentsRepository.findManyByCheckInId(
+                checkInId
+            )
+
+        const checkInAttachmentList = new CheckInAttachmentList(
+            currentCheckinAttachments
+        )
 
         const checkInAttachments = attachmentsIds.map((attachmentId) => {
             return CheckInAttachment.create({
-                checkInId: checkin.id,
                 attachmentId: new UniqueEntityID(attachmentId),
+                checkInId: checkin.id,
             })
         })
 
-        checkin.attachments = new CheckInAttachmentList(checkInAttachments)
+        checkInAttachmentList.update(checkInAttachments)
 
-        await this.checkInRepository.create(checkin)
+        checkin.attachments = checkInAttachmentList
+        details ? (checkin.details = details) : (details = null)
+
+        await this.checkInRepository.save(checkin)
 
         return right({
             checkin,
