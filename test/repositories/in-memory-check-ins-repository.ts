@@ -1,0 +1,43 @@
+import { CheckInRepository } from '@/domain/parcel-forwarding/application/repositories/check-in-repository'
+import { CheckIn } from '@/domain/parcel-forwarding/enterprise/entities/check-in'
+import { InMemoryCheckInsAttachmentsRepository } from './in-memory-check-ins-attachments-repository'
+
+export class InMemoryCheckInsRepository implements CheckInRepository {
+    public items: CheckIn[] = []
+
+    constructor(
+        private checkInsAttachmentRepository: InMemoryCheckInsAttachmentsRepository
+    ) {}
+
+    async findById(id: string) {
+        const checkin = this.items.find((item) => item.id.toString() === id)
+
+        if (!checkin) {
+            return null
+        }
+
+        return checkin
+    }
+
+    async save(checkin: CheckIn) {
+        const itemIndex = this.items.findIndex((item) => item.id === checkin.id)
+
+        this.items[itemIndex] = checkin
+
+        await this.checkInsAttachmentRepository.createMany(
+            checkin.attachments.getNewItems()
+        )
+
+        await this.checkInsAttachmentRepository.deleteMany(
+            checkin.attachments.getRemovedItems()
+        )
+    }
+
+    async create(checkin: CheckIn) {
+        this.items.push(checkin)
+
+        await this.checkInsAttachmentRepository.createMany(
+            checkin.attachments.getItems()
+        )
+    }
+}
