@@ -8,6 +8,7 @@ export interface CheckInProps {
     customerId: UniqueEntityID
     details?: string | null
     attachments: CheckInAttachmentList
+    weight?: number | null
     createdAt: Date
     updatedAt?: Date | null
 }

@@ -9,6 +9,7 @@ interface CheckInUseCaseRequest {
     parcelForwardingId: string
     customerId: string
     details?: string
+    number?: number
     attachmentsIds: string[]
 }
 

@@ -12,6 +12,7 @@ interface EditCheckInUseCaseRequest {
     checkInId: string
     customerId: string
     details?: string | null
+    weight?: number | null
     attachmentsIds: string[]
 }
 

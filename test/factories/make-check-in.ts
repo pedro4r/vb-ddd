@@ -14,6 +14,7 @@ export function makeCheckIn(
             parcelForwardingId: new UniqueEntityID(),
             customerId: new UniqueEntityID(),
             details: faker.lorem.text(),
+            weight: faker.number.float(),
             ...override,
         },
         id
