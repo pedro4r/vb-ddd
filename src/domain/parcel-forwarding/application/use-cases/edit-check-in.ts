@@ -10,6 +10,7 @@ import { CheckInAttachmentList } from '../../enterprise/entities/check-in-attach
 
 interface EditCheckInUseCaseRequest {
     checkInId: string
+    customerId: string
     details?: string | null
     attachmentsIds: string[]
 }
@@ -29,6 +30,7 @@ export class EditCheckInUseCase {
 
     async execute({
         checkInId,
+        customerId,
         details,
         attachmentsIds,
     }: EditCheckInUseCaseRequest): Promise<EditCheckInUseCaseResponse> {
@@ -36,6 +38,10 @@ export class EditCheckInUseCase {
 
         if (!checkin) {
             return left(new ResourceNotFoundError())
+        }
+
+        if (customerId !== checkin.customerId.toString()) {
+            return left(new NotAllowedError())
         }
 
         const currentCheckinAttachments =
