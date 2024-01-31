@@ -9,6 +9,15 @@ export class InMemoryCheckInsRepository implements CheckInRepository {
         private checkInsAttachmentRepository: InMemoryCheckInsAttachmentsRepository
     ) {}
 
+    async delete(checkin: CheckIn) {
+        const itemIndex = this.items.findIndex((item) => item.id === checkin.id)
+        this.items.splice(itemIndex, 1)
+
+        this.checkInsAttachmentRepository.deleteManyByCheckInId(
+            checkin.id.toString()
+        )
+    }
+
     async findById(id: string) {
         const checkin = this.items.find((item) => item.id.toString() === id)
 

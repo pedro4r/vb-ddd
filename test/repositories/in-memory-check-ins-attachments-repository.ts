@@ -24,4 +24,11 @@ export class InMemoryCheckInsAttachmentsRepository
 
         this.items = checkInAttachments
     }
+
+    async deleteManyByCheckInId(checkInId: string) {
+        const checkInAttachments = this.items.filter(
+            (item) => item.checkInId.toString() !== checkInId
+        )
+        this.items = checkInAttachments
+    }
 }

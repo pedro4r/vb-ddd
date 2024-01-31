@@ -47,6 +47,7 @@ describe('Edit Question', () => {
 
         await sut.execute({
             checkInId: newCheckIn.id.toValue(),
+            customerId: newCheckIn.customerId.toValue(),
             details: 'New details',
             attachmentsIds: ['1', '3'],
         })
@@ -112,6 +113,7 @@ describe('Edit Question', () => {
 
         const result = await sut.execute({
             checkInId: newCheckIn.id.toValue(),
+            customerId: newCheckIn.customerId.toValue(),
             details: 'New details',
             attachmentsIds: ['1', '3'],
         })
