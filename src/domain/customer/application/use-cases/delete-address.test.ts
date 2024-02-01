@@ -38,4 +38,42 @@ describe('Delete an Address', () => {
         expect(inMemoryAddressRepository.items.length === 1).toBeTruthy()
         expect(inMemoryAddressRepository.items[0]).toEqual(address2)
     })
+
+    it('not should be able to delete an address when there is only one last', async () => {
+        const address = makeAddress(
+            {
+                customerId: new UniqueEntityID('customer-1'),
+            },
+            new UniqueEntityID('address-1')
+        )
+
+        inMemoryAddressRepository.items.push(address)
+
+        const result = await sut.execute({
+            addressId: address.id.toString(),
+            customerId: address.customerId.toString(),
+        })
+
+        expect(result.isLeft).toBeTruthy()
+        expect(inMemoryAddressRepository.items.length === 1).toBeTruthy()
+    })
+
+    it('not should be able to delete an address from another customer', async () => {
+        const address = makeAddress(
+            {
+                customerId: new UniqueEntityID('customer-1'),
+            },
+            new UniqueEntityID('address-1')
+        )
+
+        inMemoryAddressRepository.items.push(address)
+
+        const result = await sut.execute({
+            addressId: address.id.toString(),
+            customerId: 'customer-2',
+        })
+
+        expect(result.isLeft).toBeTruthy()
+        expect(inMemoryAddressRepository.items.length === 1).toBeTruthy()
+    })
 })

@@ -32,7 +32,11 @@ export class DeleteAddressUseCase {
         }
 
         if (addresses.length === 1) {
-            return left(new NotAllowedError('Cannot delete the last address.'))
+            return left(
+                new NotAllowedError(
+                    'Cannot delete the address when you have only one.'
+                )
+            )
         }
 
         const address = await this.addressRepository.findById(addressId)
