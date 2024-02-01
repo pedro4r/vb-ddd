@@ -4,8 +4,16 @@ import { Address } from '@/domain/customer/entities/address'
 export class InMemoryAddressRepository implements AddressRepository {
     public items: Address[] = []
 
-    findManyByCustomerId(customerId: string): Promise<Address[] | null> {
-        throw new Error('Method not implemented.')
+    async findManyByCustomerId(customerId: string) {
+        const addresses = this.items.filter(
+            (item) => item.customerId.toString() === customerId
+        )
+
+        if (addresses.length === 0) {
+            return null
+        }
+
+        return addresses
     }
 
     async findById(addressId: string) {

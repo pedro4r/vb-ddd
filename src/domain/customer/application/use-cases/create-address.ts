@@ -3,7 +3,7 @@ import { Either, right } from '@/core/either'
 import { Address } from '../../entities/address'
 import { AddressRepository } from '../repositories/address-repository'
 
-interface AddressUseCaseRequest {
+interface CreateAddressUseCaseRequest {
     customerId: string
     recipientName: string
     taxID?: string | null
@@ -16,7 +16,7 @@ interface AddressUseCaseRequest {
     phoneNumber?: string | null
 }
 
-type AddressUseCaseResponse = Either<
+type CreateAddressUseCaseResponse = Either<
     null,
     {
         address: Address
@@ -37,7 +37,7 @@ export class CreateAddressUseCase {
         zipCode,
         country,
         phoneNumber,
-    }: AddressUseCaseRequest): Promise<AddressUseCaseResponse> {
+    }: CreateAddressUseCaseRequest): Promise<CreateAddressUseCaseResponse> {
         const newAddress = Address.create({
             customerId: new UniqueEntityID(customerId),
             recipientName,
