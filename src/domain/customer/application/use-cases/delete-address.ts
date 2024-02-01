@@ -13,7 +13,7 @@ type DeleteAddressUseCaseResponse = Either<
     null
 >
 
-export class DeleteCheckInUseCase {
+export class DeleteAddressUseCase {
     constructor(private addressRepository: AddressRepository) {}
 
     async execute({
