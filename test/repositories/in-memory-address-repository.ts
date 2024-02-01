@@ -37,7 +37,10 @@ export class InMemoryAddressRepository implements AddressRepository {
         this.items[itemIndex] = address
     }
 
-    delete(address: Address): Promise<void> {
-        throw new Error('Method not implemented.')
+    async delete(address: Address) {
+        const itemIndex = this.items.findIndex(
+            (item) => item.id.toString() === address.id.toString()
+        )
+        this.items.splice(itemIndex, 1)
     }
 }
