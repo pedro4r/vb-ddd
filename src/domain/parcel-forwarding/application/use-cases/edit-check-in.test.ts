@@ -89,7 +89,7 @@ describe('Edit Question', () => {
     //     expect(result.value).toBeInstanceOf(NotAllowedError)
     // })
 
-    it('should sync new and removed attachment when editing a question', async () => {
+    it('should sync new and removed attachment when editing a check-in', async () => {
         const newCheckIn = makeCheckIn(
             {
                 parcelForwardingId: new UniqueEntityID('company-1'),
