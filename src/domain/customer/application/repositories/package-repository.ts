@@ -2,4 +2,6 @@ import { Package } from '../../entities/package'
 
 export abstract class PackageRepository {
     abstract create(pkg: Package): Promise<void>
+    abstract findById(id: string): Promise<Package | null>
+    abstract save(pkg: Package): Promise<void>
 }

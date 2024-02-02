@@ -1,9 +1,12 @@
-import { Either, right } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { Package } from '../../entities/package'
 import { PackageRepository } from '../repositories/package-repository'
 
-interface CreatePackageUseCaseRequest {
+interface EditPackagesRequest {
+    packageId: string
     customerId: string
     parcelForwardingId: string
     addressId: string
@@ -12,25 +15,36 @@ interface CreatePackageUseCaseRequest {
     hasBattery: boolean
 }
 
-type CreatePackageUseCaseResponse = Either<
-    null,
+type EditPackagesResponse = Either<
+    ResourceNotFoundError | NotAllowedError,
     {
-        pkg: Package
+        package: Package
     }
 >
 
-export class CreatePackageUseCase {
+export class EditPackagesUseCase {
     constructor(private packageRepository: PackageRepository) {}
 
     async execute({
+        packageId,
         customerId,
         parcelForwardingId,
         addressId,
         checkInsId,
         customsDeclarationId,
         hasBattery,
-    }: CreatePackageUseCaseRequest): Promise<CreatePackageUseCaseResponse> {
-        const pkg = Package.create({
+    }: EditPackagesRequest): Promise<EditPackagesResponse> {
+        const pkg = await this.packageRepository.findById(packageId)
+
+        if (!pkg) {
+            return left(new ResourceNotFoundError())
+        }
+
+        if (pkg.customerId.toString() !== customerId) {
+            return left(new NotAllowedError())
+        }
+
+        const newPkg = Package.create({
             customerId: new UniqueEntityID(customerId),
             parcelForwardingId: new UniqueEntityID(parcelForwardingId),
             addressId: new UniqueEntityID(addressId),
@@ -39,10 +53,10 @@ export class CreatePackageUseCase {
             hasBattery,
         })
 
-        await this.packageRepository.create(pkg)
+        await this.packageRepository.save(newPkg)
 
         return right({
-            pkg,
+            package: newPkg,
         })
     }
 }
