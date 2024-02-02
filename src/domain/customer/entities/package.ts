@@ -1,7 +1,6 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/opitional'
-import { PackageProductInfoList } from './package-product-info-list'
 
 export interface PackageProps {
     customerId: UniqueEntityID
@@ -9,7 +8,7 @@ export interface PackageProps {
     freightProviderId?: UniqueEntityID
     addressId: UniqueEntityID
     checkInsId: UniqueEntityID[]
-    packageProductsInfoList: PackageProductInfoList
+    packageProductsInfoId?: UniqueEntityID[]
     weight?: number | null
     hasBattery: boolean
     trackingNumber?: string | null
@@ -20,16 +19,13 @@ export interface PackageProps {
 
 export class Package extends Entity<PackageProps> {
     static create(
-        props: Optional<PackageProps, 'createdAt' | 'packageProductsInfoList'>,
+        props: Optional<PackageProps, 'createdAt'>,
         id?: UniqueEntityID
     ) {
         const pkg = new Package(
             {
                 ...props,
                 createdAt: props.createdAt ?? new Date(),
-                packageProductsInfoList:
-                    props.packageProductsInfoList ??
-                    new PackageProductInfoList(),
             },
             id
         )
