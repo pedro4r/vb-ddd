@@ -44,4 +44,27 @@ describe('Edit Customs Declaration', () => {
             value: 10,
         })
     })
+
+    it('should not be able to edit a customs declaration from antoher user', async () => {
+        const customsDeclaration = makeCustomsDeclaration({
+            customerId: new UniqueEntityID('customer-1'),
+            packageId: new UniqueEntityID('package-1'),
+        })
+
+        await inMemoryCustomsDeclarationRepository.create(customsDeclaration)
+
+        const result = await sut.execute({
+            customerId: 'another-customer-id',
+            packageId: customsDeclaration.packageId.toString(),
+            itemsList: [
+                {
+                    description: 'New description',
+                    quantity: 2,
+                    value: 10,
+                },
+            ],
+        })
+
+        expect(result.isLeft()).toBeTruthy()
+    })
 })

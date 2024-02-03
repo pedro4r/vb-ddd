@@ -1,7 +1,6 @@
 import { InMemoryPackageRepository } from 'test/repositories/in-memory-package-repository'
 import { EditPackagesUseCase } from './edit-package'
 import { makePackage } from 'test/factories/make-package'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 let inMemoryPackageRepository: InMemoryPackageRepository
 let sut: EditPackagesUseCase
@@ -17,7 +16,7 @@ describe('Edit Package', () => {
 
         await inMemoryPackageRepository.create(newPkg)
 
-        await sut.execute({
+        const result = await sut.execute({
             packageId: newPkg.id.toString(),
             customerId: newPkg.customerId.toString(),
             parcelForwardingId: newPkg.parcelForwardingId.toString(),
@@ -27,6 +26,8 @@ describe('Edit Package', () => {
             hasBattery: true,
         })
 
+        expect(result.isRight()).toBeTruthy()
+
         expect(inMemoryPackageRepository.items[0].id.toString()).toEqual(
             newPkg.id.toString()
         )
@@ -35,5 +36,23 @@ describe('Edit Package', () => {
         )
 
         expect(inMemoryPackageRepository.items[0].checkInsId.length).toEqual(2)
+    })
+
+    it('should not be able to edit package from another user', async () => {
+        const newPkg = makePackage()
+
+        await inMemoryPackageRepository.create(newPkg)
+
+        const result = await sut.execute({
+            packageId: newPkg.id.toString(),
+            customerId: 'another-customer-id',
+            parcelForwardingId: newPkg.parcelForwardingId.toString(),
+            addressId: 'address-2',
+            checkInsId: ['checkin-2', 'checkin-3'],
+            customsDeclarationId: 'customs-declaration-2',
+            hasBattery: true,
+        })
+
+        expect(result.isLeft()).toBeTruthy()
     })
 })

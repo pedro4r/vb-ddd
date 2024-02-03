@@ -40,4 +40,31 @@ describe('Edit Address', () => {
             taxID: 'New taxID',
         })
     })
+
+    it('should be able to edit an address from another user', async () => {
+        const newAddress = makeAddress(
+            {
+                customerId: new UniqueEntityID('customer-1'),
+            },
+            new UniqueEntityID('check-in-1')
+        )
+
+        await inMemoryAddressRepository.create(newAddress)
+
+        const result = await sut.execute({
+            addressId: newAddress.id.toValue(),
+            customerId: 'another-customer-id',
+            recipientName: 'New recipient name',
+            taxID: 'New taxID',
+            address: 'New address',
+            complement: 'New complement',
+            city: 'New city',
+            state: 'New state',
+            zipCode: 'New zipCode',
+            country: 'New country',
+            phoneNumber: 'New phoneNumber',
+        })
+
+        expect(result.isLeft).toBeTruthy()
+    })
 })
