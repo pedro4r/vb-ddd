@@ -1,26 +1,21 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { Address } from '@/domain/customer/entities/address'
-import { PackageProps } from '@/domain/customer/entities/package'
-import { faker } from '@faker-js/faker'
+import { Package, PackageProps } from '@/domain/customer/entities/package'
 
 export function makePackage(
     override: Partial<PackageProps> = {},
     id?: UniqueEntityID
 ) {
-    const address = Address.create(
+    const address = Package.create(
         {
-            customerId: new UniqueEntityID(),
-            recipientName: faker.person.firstName(),
-            taxID: faker.number.int().toString(),
-            address: faker.location.streetAddress(),
-            complement: faker.location.secondaryAddress(),
-            state: faker.location.state(),
-            zipCode: faker.location.zipCode(),
-            country: faker.location.country(),
-            city: faker.location.city(),
+            customerId: new UniqueEntityID('customer-1'),
+            parcelForwardingId: new UniqueEntityID('parcel-forwarding-1'),
+            addressId: new UniqueEntityID('address-1'),
+            checkInsId: [new UniqueEntityID('checkin-1')],
+            customsDeclarationId: new UniqueEntityID('customs-declaration-1'),
+            hasBattery: false,
             ...override,
         },
-        id
+        new UniqueEntityID('package-1')
     )
 
     return address

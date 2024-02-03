@@ -17,9 +17,9 @@ export class InMemoryPackageRepository implements PackageRepository {
     }
 
     async save(pkg: Package) {
-        const index = this.items.findIndex(
-            (item) => item.id.toString() === pkg.id.toString()
-        )
+        console.log(pkg.id.toString())
+        console.log(this.items[0].id.toString())
+        const index = this.items.findIndex((item) => item.id.equals(pkg.id))
         this.items[index] = pkg
     }
 }

@@ -1,5 +1,7 @@
 import { InMemoryPackageRepository } from 'test/repositories/in-memory-package-repository'
 import { EditPackagesUseCase } from './edit-package'
+import { makePackage } from 'test/factories/make-package'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 let inMemoryPackageRepository: InMemoryPackageRepository
 let sut: EditPackagesUseCase
@@ -11,31 +13,27 @@ describe('Edit Package', () => {
     })
 
     it('should be able to edit package', async () => {
-        const newPackage = makePackage(
-            {
-                customerId: new UniqueEntityID('customer-1'),
-            },
-            new UniqueEntityID('check-in-1')
-        )
+        const newPkg = makePackage()
 
-        await inMemoryPackageRepository.create(newPackage)
+        await inMemoryPackageRepository.create(newPkg)
 
         await sut.execute({
-            packageId: newPackage.id.toValue(),
-            customerId: newPackage.customerId.toValue(),
-            recipientName: 'New recipient name',
-            taxID: 'New taxID',
-            package: 'New package',
-            complement: 'New complement',
-            city: 'New city',
-            state: 'New state',
-            zipCode: 'New zipCode',
-            country: 'New country',
-            phoneNumber: 'New phoneNumber',
+            packageId: newPkg.id.toString(),
+            customerId: newPkg.customerId.toString(),
+            parcelForwardingId: newPkg.parcelForwardingId.toString(),
+            addressId: 'address-2',
+            checkInsId: ['checkin-2', 'checkin-3'],
+            customsDeclarationId: 'customs-declaration-2',
+            hasBattery: true,
         })
 
-        expect(inMemoryPackageRepository.items[0]).toMatchObject({
-            taxID: 'New taxID',
-        })
+        expect(inMemoryPackageRepository.items[0].id.toString()).toEqual(
+            newPkg.id.toString()
+        )
+        expect(inMemoryPackageRepository.items[0].addressId.toString()).toEqual(
+            'address-2'
+        )
+
+        expect(inMemoryPackageRepository.items[0].checkInsId.length).toEqual(2)
     })
 })
