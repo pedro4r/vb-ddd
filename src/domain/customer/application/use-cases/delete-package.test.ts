@@ -19,7 +19,7 @@ describe('Delete an Package', () => {
         sut = new DeletePackageUseCase(inMemoryPackageRepository)
     })
 
-    it('should be able to delete an package', async () => {
+    it('should be able to delete a package', async () => {
         const package1 = makePackage(
             {
                 customerId: new UniqueEntityID('customer-1'),
@@ -46,7 +46,7 @@ describe('Delete an Package', () => {
         expect(inMemoryPackageRepository.items[0]).toEqual(package2)
     })
 
-    it('should not be able to delete an package from another customer', async () => {
+    it('should not be able to delete a package from another customer', async () => {
         const pkg = makePackage(
             {
                 customerId: new UniqueEntityID('customer-1'),

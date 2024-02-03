@@ -1,17 +1,23 @@
 import { InMemoryPackageRepository } from 'test/repositories/in-memory-package-repository'
 import { EditPackagesUseCase } from './edit-package'
 import { makePackage } from 'test/factories/make-package'
+import { InMemoryCustomsDeclarationRepository } from 'test/repositories/in-memory-customs-declaration-repository'
 
+let inMemoryCustomsDeclarationRepository: InMemoryCustomsDeclarationRepository
 let inMemoryPackageRepository: InMemoryPackageRepository
 let sut: EditPackagesUseCase
 
 describe('Edit Package', () => {
     beforeEach(() => {
-        inMemoryPackageRepository = new InMemoryPackageRepository()
+        inMemoryCustomsDeclarationRepository =
+            new InMemoryCustomsDeclarationRepository()
+        inMemoryPackageRepository = new InMemoryPackageRepository(
+            inMemoryCustomsDeclarationRepository
+        )
         sut = new EditPackagesUseCase(inMemoryPackageRepository)
     })
 
-    it('should be able to edit package', async () => {
+    it('should be able to edit a package', async () => {
         const newPkg = makePackage()
 
         await inMemoryPackageRepository.create(newPkg)
@@ -38,7 +44,7 @@ describe('Edit Package', () => {
         expect(inMemoryPackageRepository.items[0].checkInsId.length).toEqual(2)
     })
 
-    it('should not be able to edit package from another user', async () => {
+    it('should not be able to edit a package from another customer', async () => {
         const newPkg = makePackage()
 
         await inMemoryPackageRepository.create(newPkg)

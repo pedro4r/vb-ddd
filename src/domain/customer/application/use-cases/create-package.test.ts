@@ -1,12 +1,18 @@
 import { InMemoryPackageRepository } from 'test/repositories/in-memory-package-repository'
 import { CreatePackageUseCase } from './create-package'
+import { InMemoryCustomsDeclarationRepository } from 'test/repositories/in-memory-customs-declaration-repository'
 
+let inMemoryCustomsDeclarationRepository: InMemoryCustomsDeclarationRepository
 let inMemoryPackageRepository: InMemoryPackageRepository
 let sut: CreatePackageUseCase
 
 describe('Create Package', () => {
     beforeEach(() => {
-        inMemoryPackageRepository = new InMemoryPackageRepository()
+        inMemoryCustomsDeclarationRepository =
+            new InMemoryCustomsDeclarationRepository()
+        inMemoryPackageRepository = new InMemoryPackageRepository(
+            inMemoryCustomsDeclarationRepository
+        )
         sut = new CreatePackageUseCase(inMemoryPackageRepository)
     })
 

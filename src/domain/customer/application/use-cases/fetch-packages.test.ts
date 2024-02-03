@@ -35,8 +35,8 @@ describe('Get an Package', () => {
             {
                 customerId: new UniqueEntityID('customer-1'),
                 checkInsId: [
-                    new UniqueEntityID('checkin-1'),
                     new UniqueEntityID('checkin-3'),
+                    new UniqueEntityID('checkin-4'),
                 ],
             },
             new UniqueEntityID('package-2')
@@ -46,8 +46,8 @@ describe('Get an Package', () => {
             {
                 customerId: new UniqueEntityID('customer-2'),
                 checkInsId: [
-                    new UniqueEntityID('checkin-4'),
                     new UniqueEntityID('checkin-5'),
+                    new UniqueEntityID('checkin-6'),
                 ],
             },
             new UniqueEntityID('package-3')
@@ -70,9 +70,46 @@ describe('Get an Package', () => {
             expect.objectContaining({ value: 'checkin-1' }),
             expect.objectContaining({ value: 'checkin-2' }),
         ])
+        expect(inMemoryPackageRepository.items[1].checkInsId).toEqual([
+            expect.objectContaining({ value: 'checkin-3' }),
+            expect.objectContaining({ value: 'checkin-4' }),
+        ])
 
         expect(inMemoryPackageRepository.items[0].customerId).toEqual(
             new UniqueEntityID('customer-1')
         )
+    })
+
+    it('should not be able to fetch packages from another customer', async () => {
+        const pkg1 = makePackage(
+            {
+                customerId: new UniqueEntityID('customer-1'),
+                checkInsId: [
+                    new UniqueEntityID('checkin-1'),
+                    new UniqueEntityID('checkin-2'),
+                ],
+            },
+            new UniqueEntityID('package-1')
+        )
+
+        const pk2 = makePackage(
+            {
+                customerId: new UniqueEntityID('customer-1'),
+                checkInsId: [
+                    new UniqueEntityID('checkin-3'),
+                    new UniqueEntityID('checkin-4'),
+                ],
+            },
+            new UniqueEntityID('package-2')
+        )
+
+        inMemoryPackageRepository.items.push(pkg1)
+        inMemoryPackageRepository.items.push(pk2)
+
+        const result = await sut.execute({
+            customerId: 'customer-2',
+        })
+
+        expect(result.isLeft()).toBeTruthy()
     })
 })
