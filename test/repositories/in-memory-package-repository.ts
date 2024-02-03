@@ -1,8 +1,17 @@
+import { CustomsDeclarationRepository } from '@/domain/customer/application/repositories/customs-declaration-repository'
 import { PackageRepository } from '@/domain/customer/application/repositories/package-repository'
 import { Package } from '@/domain/customer/entities/package'
 
 export class InMemoryPackageRepository implements PackageRepository {
     public items: Package[] = []
+
+    constructor(
+        private customsDeclarationRepository: CustomsDeclarationRepository
+    ) {}
+
+    findManyByCustomerId(id: string): Promise<Package[] | null> {
+        throw new Error('Method not implemented.')
+    }
 
     async create(pkg: Package) {
         this.items.push(pkg)
@@ -17,9 +26,14 @@ export class InMemoryPackageRepository implements PackageRepository {
     }
 
     async save(pkg: Package) {
-        console.log(pkg.id.toString())
-        console.log(this.items[0].id.toString())
         const index = this.items.findIndex((item) => item.id.equals(pkg.id))
         this.items[index] = pkg
+    }
+
+    async delete(pkg: Package) {
+        const index = this.items.findIndex((item) => item.id.equals(pkg.id))
+        this.items.splice(index, 1)
+
+        await this.customsDeclarationRepository.delete(pkg.id.toString())
     }
 }
