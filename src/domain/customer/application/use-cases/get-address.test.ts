@@ -17,12 +17,13 @@ describe('Get an Address', () => {
             {
                 customerId: new UniqueEntityID('customer-1'),
             },
-            new UniqueEntityID('check-in-1')
+            new UniqueEntityID('address-1')
         )
 
         inMemoryAddressRepository.items.push(address)
 
         const result = await sut.execute({
+            customerId: address.customerId.toString(),
             addressId: address.id.toString(),
         })
 
@@ -30,5 +31,23 @@ describe('Get an Address', () => {
         expect(inMemoryAddressRepository.items[0]).toMatchObject({
             taxID: address.taxID,
         })
+    })
+
+    it('should be able to get an address from another customer', async () => {
+        const address = makeAddress(
+            {
+                customerId: new UniqueEntityID('customer-1'),
+            },
+            new UniqueEntityID('address-1')
+        )
+
+        inMemoryAddressRepository.items.push(address)
+
+        const result = await sut.execute({
+            customerId: 'another-customer-id',
+            addressId: address.id.toString(),
+        })
+
+        expect(result.isLeft()).toBeTruthy()
     })
 })

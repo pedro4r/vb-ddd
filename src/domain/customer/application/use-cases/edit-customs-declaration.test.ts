@@ -1,6 +1,3 @@
-import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
-import { EditAddressUseCase } from './edit-address'
-import { makeAddress } from 'test/factories/make-address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { EditCustomsDeclaration } from './edit-customs-declaration'
 import { InMemoryCustomsDeclarationRepository } from 'test/repositories/in-memory-customs-declaration-repository'
@@ -45,7 +42,7 @@ describe('Edit Customs Declaration', () => {
         })
     })
 
-    it('should not be able to edit a customs declaration from antoher user', async () => {
+    it('should not be able to edit a customs declaration from antoher customer', async () => {
         const customsDeclaration = makeCustomsDeclaration({
             customerId: new UniqueEntityID('customer-1'),
             packageId: new UniqueEntityID('package-1'),

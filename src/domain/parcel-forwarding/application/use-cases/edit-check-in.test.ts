@@ -67,28 +67,6 @@ describe('Edit Question', () => {
         ])
     })
 
-    // it('should not be able to edit a question from another user', async () => {
-    //     const newQuestion = makeQuestion(
-    //         {
-    //             authorId: new UniqueEntityID('author-1'),
-    //         },
-    //         new UniqueEntityID('question-1')
-    //     )
-
-    //     await inMemoryQuestionsRepository.create(newQuestion)
-
-    //     const result = await sut.execute({
-    //         questionId: newQuestion.id.toValue(),
-    //         authorId: 'author-2',
-    //         title: 'Pergunta teste',
-    //         content: 'Conteúdo teste',
-    //         attachmentsIds: [],
-    //     })
-
-    //     expect(result.isLeft()).toBe(true)
-    //     expect(result.value).toBeInstanceOf(NotAllowedError)
-    // })
-
     it('should sync new and removed attachment when editing a check-in', async () => {
         const newCheckIn = makeCheckIn(
             {

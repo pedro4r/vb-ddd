@@ -28,7 +28,7 @@ export class FetchPackageUseCase {
             return left(new ResourceNotFoundError())
         }
 
-        if (customerId !== packages[0].customerId.toString()) {
+        if (customerId !== packages[0]?.customerId.toString()) {
             return left(new NotAllowedError())
         }
 

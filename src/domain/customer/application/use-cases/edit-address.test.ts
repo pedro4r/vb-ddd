@@ -17,7 +17,7 @@ describe('Edit Address', () => {
             {
                 customerId: new UniqueEntityID('customer-1'),
             },
-            new UniqueEntityID('check-in-1')
+            new UniqueEntityID('address-1')
         )
 
         await inMemoryAddressRepository.create(newAddress)
@@ -41,12 +41,12 @@ describe('Edit Address', () => {
         })
     })
 
-    it('should be able to edit an address from another user', async () => {
+    it('should be able to edit an address from another customer', async () => {
         const newAddress = makeAddress(
             {
                 customerId: new UniqueEntityID('customer-1'),
             },
-            new UniqueEntityID('check-in-1')
+            new UniqueEntityID('address-1')
         )
 
         await inMemoryAddressRepository.create(newAddress)
