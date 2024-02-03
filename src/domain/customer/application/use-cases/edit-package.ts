@@ -44,14 +44,17 @@ export class EditPackagesUseCase {
             return left(new NotAllowedError())
         }
 
-        const newPkg = Package.create({
-            customerId: new UniqueEntityID(customerId),
-            parcelForwardingId: new UniqueEntityID(parcelForwardingId),
-            addressId: new UniqueEntityID(addressId),
-            checkInsId: checkInsId.map((id) => new UniqueEntityID(id)),
-            customsDeclarationId: new UniqueEntityID(customsDeclarationId),
-            hasBattery,
-        })
+        const newPkg = Package.create(
+            {
+                customerId: new UniqueEntityID(customerId),
+                parcelForwardingId: new UniqueEntityID(parcelForwardingId),
+                addressId: new UniqueEntityID(addressId),
+                checkInsId: checkInsId.map((id) => new UniqueEntityID(id)),
+                customsDeclarationId: new UniqueEntityID(customsDeclarationId),
+                hasBattery,
+            },
+            new UniqueEntityID(packageId)
+        )
 
         await this.packageRepository.save(newPkg)
 
