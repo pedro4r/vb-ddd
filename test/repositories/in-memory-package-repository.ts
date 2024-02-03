@@ -9,8 +9,16 @@ export class InMemoryPackageRepository implements PackageRepository {
         private customsDeclarationRepository: CustomsDeclarationRepository
     ) {}
 
-    findManyByCustomerId(id: string): Promise<Package[] | null> {
-        throw new Error('Method not implemented.')
+    async findManyByCustomerId(id: string) {
+        const packages = this.items.filter(
+            (pkg) => pkg.customerId.toString() === id
+        )
+
+        if (!packages) {
+            return null
+        }
+
+        return packages
     }
 
     async create(pkg: Package) {
