@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import {
     CustomsDeclaration,
     CustomsDeclarationProps,
-} from '@/domain/customer/entities/customs-declaration'
+} from '@/domain/customer/enterprise/entities/customs-declaration'
 import { faker } from '@faker-js/faker'
 
 export function makeCustomsDeclaration(

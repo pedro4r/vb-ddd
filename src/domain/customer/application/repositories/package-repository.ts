@@ -1,4 +1,4 @@
-import { Package } from '../../entities/package'
+import { Package } from '../../enterprise/entities/package'
 
 export abstract class PackageRepository {
     abstract create(pkg: Package): Promise<void>

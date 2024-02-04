@@ -1,4 +1,4 @@
-import { Address } from '../../entities/address'
+import { Address } from '../../enterprise/entities/address'
 
 export abstract class AddressRepository {
     abstract findManyByCustomerId(customerId: string): Promise<Address[] | null>

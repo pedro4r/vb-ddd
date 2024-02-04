@@ -1,4 +1,4 @@
-import { CustomsDeclaration } from '../../entities/customs-declaration'
+import { CustomsDeclaration } from '../../enterprise/entities/customs-declaration'
 
 export abstract class CustomsDeclarationRepository {
     abstract create(customsDeclaration: CustomsDeclaration): Promise<void>

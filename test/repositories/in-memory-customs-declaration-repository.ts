@@ -1,5 +1,5 @@
 import { CustomsDeclarationRepository } from '@/domain/customer/application/repositories/customs-declaration-repository'
-import { CustomsDeclaration } from '@/domain/customer/entities/customs-declaration'
+import { CustomsDeclaration } from '@/domain/customer/enterprise/entities/customs-declaration'
 
 export class InMemoryCustomsDeclarationRepository
     implements CustomsDeclarationRepository

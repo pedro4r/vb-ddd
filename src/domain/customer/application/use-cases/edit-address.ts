@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Address } from '../../entities/address'
+import { Address } from '../../enterprise/entities/address'
 import { AddressRepository } from '../repositories/address-repository'
 
 interface EditAddressUseCaseRequest {

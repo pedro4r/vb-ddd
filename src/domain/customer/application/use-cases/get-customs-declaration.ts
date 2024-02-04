@@ -1,5 +1,5 @@
 import { Either, left, right } from '@/core/either'
-import { CustomsDeclaration } from '../../entities/customs-declaration'
+import { CustomsDeclaration } from '../../enterprise/entities/customs-declaration'
 import { CustomsDeclarationRepository } from '../repositories/customs-declaration-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'

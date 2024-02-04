@@ -1,6 +1,6 @@
 import { Either, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { Package } from '../../entities/package'
+import { Package } from '../../enterprise/entities/package'
 import { PackageRepository } from '../repositories/package-repository'
 
 interface CreatePackageUseCaseRequest {

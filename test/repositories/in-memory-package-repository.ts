@@ -1,6 +1,7 @@
+import { DomainEvents } from '@/core/events/domain-events'
 import { CustomsDeclarationRepository } from '@/domain/customer/application/repositories/customs-declaration-repository'
 import { PackageRepository } from '@/domain/customer/application/repositories/package-repository'
-import { Package } from '@/domain/customer/entities/package'
+import { Package } from '@/domain/customer/enterprise/entities/package'
 
 export class InMemoryPackageRepository implements PackageRepository {
     public items: Package[] = []
@@ -23,6 +24,7 @@ export class InMemoryPackageRepository implements PackageRepository {
 
     async create(pkg: Package) {
         this.items.push(pkg)
+        DomainEvents.dispatchEventsForAggregate(pkg.id)
     }
 
     async findById(id: string) {
@@ -36,6 +38,7 @@ export class InMemoryPackageRepository implements PackageRepository {
     async save(pkg: Package) {
         const index = this.items.findIndex((item) => item.id.equals(pkg.id))
         this.items[index] = pkg
+        DomainEvents.dispatchEventsForAggregate(pkg.id)
     }
 
     async delete(pkg: Package) {
