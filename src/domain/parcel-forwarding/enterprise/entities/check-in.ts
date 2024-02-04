@@ -1,7 +1,8 @@
-import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/opitional'
 import { CheckInAttachmentList } from './check-in-attachment-list'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
+import { CheckInCreatedEvent } from '../events/check-in-created-event'
 
 export interface CheckInProps {
     parcelForwardingId: UniqueEntityID
@@ -13,7 +14,7 @@ export interface CheckInProps {
     updatedAt?: Date | null
 }
 
-export class CheckIn extends Entity<CheckInProps> {
+export class CheckIn extends AggregateRoot<CheckInProps> {
     get parcelForwardingId() {
         return this.props.parcelForwardingId
     }
@@ -63,6 +64,12 @@ export class CheckIn extends Entity<CheckInProps> {
             },
             id
         )
+
+        const isNewCheckIn = !id
+
+        if (isNewCheckIn) {
+            checkin.addDomainEvent(new CheckInCreatedEvent(checkin))
+        }
 
         return checkin
     }

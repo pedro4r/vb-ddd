@@ -1,4 +1,4 @@
-import { Customer } from '../../entities/customer'
+import { Customer } from '../../enterprise/entities/customer'
 
 export abstract class CustomerRepository {
     abstract findByEmail(email: string): Promise<Customer | null>

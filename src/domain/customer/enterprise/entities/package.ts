@@ -1,6 +1,7 @@
-import { Entity } from '@/core/entities/entity'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/opitional'
+import { PackageCreatedEvent } from '../events/package-created-event'
 
 export interface PackageProps {
     customerId: UniqueEntityID
@@ -17,7 +18,7 @@ export interface PackageProps {
     updatedAt?: Date
 }
 
-export class Package extends Entity<PackageProps> {
+export class Package extends AggregateRoot<PackageProps> {
     get customerId() {
         return this.props.customerId
     }
@@ -121,6 +122,12 @@ export class Package extends Entity<PackageProps> {
             },
             id
         )
+
+        const isNewPackage = !id
+
+        if (isNewPackage) {
+            pkg.addDomainEvent(new PackageCreatedEvent(pkg))
+        }
 
         return pkg
     }

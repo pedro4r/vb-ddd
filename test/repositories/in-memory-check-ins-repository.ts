@@ -1,6 +1,7 @@
 import { CheckInRepository } from '@/domain/parcel-forwarding/application/repositories/check-in-repository'
 import { CheckIn } from '@/domain/parcel-forwarding/enterprise/entities/check-in'
 import { InMemoryCheckInsAttachmentsRepository } from './in-memory-check-ins-attachments-repository'
+import { DomainEvents } from '@/core/events/domain-events'
 
 export class InMemoryCheckInsRepository implements CheckInRepository {
     public items: CheckIn[] = []
@@ -40,6 +41,8 @@ export class InMemoryCheckInsRepository implements CheckInRepository {
         await this.checkInsAttachmentRepository.deleteMany(
             checkin.attachments.getRemovedItems()
         )
+
+        DomainEvents.dispatchEventsForAggregate(checkin.id)
     }
 
     async create(checkin: CheckIn) {
@@ -48,5 +51,7 @@ export class InMemoryCheckInsRepository implements CheckInRepository {
         await this.checkInsAttachmentRepository.createMany(
             checkin.attachments.getItems()
         )
+
+        DomainEvents.dispatchEventsForAggregate(checkin.id)
     }
 }

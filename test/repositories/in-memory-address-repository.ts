@@ -1,5 +1,5 @@
 import { AddressRepository } from '@/domain/customer/application/repositories/address-repository'
-import { Address } from '@/domain/customer/entities/address'
+import { Address } from '@/domain/customer/enterprise/entities/address'
 
 export class InMemoryAddressRepository implements AddressRepository {
     public items: Address[] = []

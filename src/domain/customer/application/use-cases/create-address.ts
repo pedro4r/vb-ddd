@@ -1,6 +1,6 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Either, right } from '@/core/either'
-import { Address } from '../../entities/address'
+import { Address } from '../../enterprise/entities/address'
 import { AddressRepository } from '../repositories/address-repository'
 
 interface CreateAddressUseCaseRequest {

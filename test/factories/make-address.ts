@@ -1,5 +1,5 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { Address, AddressProps } from '@/domain/customer/entities/address'
+import { Address, AddressProps } from '@/domain/customer/enterprise/entities/address'
 import { faker } from '@faker-js/faker'
 
 export function makeAddress(

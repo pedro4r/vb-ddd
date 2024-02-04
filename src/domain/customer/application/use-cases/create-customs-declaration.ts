@@ -2,7 +2,7 @@ import { Either, right } from '@/core/either'
 import {
     CustomsDeclaration,
     ItemInfo,
-} from '../../entities/customs-declaration'
+} from '../../enterprise/entities/customs-declaration'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { CustomsDeclarationRepository } from '../repositories/customs-declaration-repository'
 

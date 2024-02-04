@@ -79,7 +79,7 @@ export class DomainEvents {
 
         if (!this.shouldRun) {
             return
-          }
+        }
 
         if (isEventRegistered) {
             const handlers = this.handlersMap[eventClassName]

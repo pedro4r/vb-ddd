@@ -1,5 +1,8 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { Package, PackageProps } from '@/domain/customer/entities/package'
+import {
+    Package,
+    PackageProps,
+} from '@/domain/customer/enterprise/entities/package'
 
 export function makePackage(
     override: Partial<PackageProps> = {},
@@ -15,7 +18,7 @@ export function makePackage(
             hasBattery: false,
             ...override,
         },
-        new UniqueEntityID('package-1')
+        id
     )
 
     return address

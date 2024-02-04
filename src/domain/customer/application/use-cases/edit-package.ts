@@ -2,7 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Package } from '../../entities/package'
+import { Package } from '../../enterprise/entities/package'
 import { PackageRepository } from '../repositories/package-repository'
 
 interface EditPackagesRequest {

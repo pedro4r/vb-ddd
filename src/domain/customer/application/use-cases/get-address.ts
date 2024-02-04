@@ -1,5 +1,5 @@
 import { Either, left, right } from '@/core/either'
-import { Address } from '../../entities/address'
+import { Address } from '../../enterprise/entities/address'
 import { AddressRepository } from '../repositories/address-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'

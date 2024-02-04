@@ -2,7 +2,7 @@ import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-r
 import { makeAddress } from 'test/factories/make-address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { FetchAddressUseCase } from './fetch-address'
-import { Address } from '../../entities/address'
+import { Address } from '../../enterprise/entities/address'
 
 let inMemoryAddressRepository: InMemoryAddressRepository
 let sut: FetchAddressUseCase
