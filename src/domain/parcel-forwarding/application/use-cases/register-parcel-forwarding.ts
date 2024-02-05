@@ -1,8 +1,8 @@
 import { Either, left, right } from '@/core/either'
 import { ParcelForwardingRepository } from '../repositories/parcel-forwarding-repository'
-import { ParcelForwardingAlreadyExistsError } from './errors/student-already-exists-error'
 import { ParcelForwarding } from '../../enterprise/entities/parcel-forwarding'
 import { HashGenerator } from '@/core/cryptography/hash-generator'
+import { UserAlreadyExistsError } from '@/core/errors/errors/user-already-exists-error'
 
 interface RegisterParcelForwardingUseCaseRequest {
     name: string
@@ -11,7 +11,7 @@ interface RegisterParcelForwardingUseCaseRequest {
 }
 
 type RegisterParcelForwardingUseCaseResponse = Either<
-    ParcelForwardingAlreadyExistsError,
+    UserAlreadyExistsError,
     {
         parcelforwarding: ParcelForwarding
     }
@@ -32,7 +32,7 @@ export class RegisterParcelForwardingUseCase {
             await this.parcelforwardingsRepository.findByEmail(email)
 
         if (parcelforwardingWithSameEmail) {
-            return left(new ParcelForwardingAlreadyExistsError(email))
+            return left(new UserAlreadyExistsError(email))
         }
 
         const hashedPassword = await this.hashGenerator.hash(password)

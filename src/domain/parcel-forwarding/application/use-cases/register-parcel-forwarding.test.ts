@@ -7,7 +7,7 @@ let fakeHasher: FakeHasher
 
 let sut: RegisterParcelForwardingUseCase
 
-describe('Register Student', () => {
+describe('Register Parcel Forwarding', () => {
     beforeEach(() => {
         inMemoryParcelForwardingRepository =
             new InMemoryParcelsForwardingRepository()
