@@ -4,7 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { ShippingAddressRepository } from '../repositories/shipping-address-repository'
 
 interface DeleteShippingAddressUseCaseRequest {
-    addressId: string
+    shippingAddressId: string
     customerId: string
 }
 
@@ -17,7 +17,7 @@ export class DeleteShippingAddressUseCase {
     constructor(private shippingAddressRepository: ShippingAddressRepository) {}
 
     async execute({
-        addressId,
+        shippingAddressId,
         customerId,
     }: DeleteShippingAddressUseCaseRequest): Promise<DeleteShippingAddressUseCaseResponse> {
         const shippingAddresses =
@@ -42,7 +42,7 @@ export class DeleteShippingAddressUseCase {
         }
 
         const shippingAddress =
-            await this.shippingAddressRepository.findById(addressId)
+            await this.shippingAddressRepository.findById(shippingAddressId)
 
         if (!shippingAddress) {
             return left(new ResourceNotFoundError())

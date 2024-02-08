@@ -27,14 +27,14 @@ describe('Delete an Address', () => {
             {
                 customerId: new UniqueEntityID('customer-1'),
             },
-            new UniqueEntityID('address-2')
+            new UniqueEntityID('shippingAddress-2')
         )
 
         inMemoryShippingAddressRepository.items.push(shippingAddress1)
         inMemoryShippingAddressRepository.items.push(shippingAddress2)
 
         await sut.execute({
-            addressId: shippingAddress1.id.toString(),
+            shippingAddressId: shippingAddress1.id.toString(),
             customerId: shippingAddress1.customerId.toString(),
         })
 
@@ -57,7 +57,7 @@ describe('Delete an Address', () => {
         inMemoryShippingAddressRepository.items.push(address)
 
         const result = await sut.execute({
-            addressId: address.id.toString(),
+            shippingAddressId: address.id.toString(),
             customerId: address.customerId.toString(),
         })
 
@@ -78,7 +78,7 @@ describe('Delete an Address', () => {
         inMemoryShippingAddressRepository.items.push(address)
 
         const result = await sut.execute({
-            addressId: address.id.toString(),
+            shippingAddressId: address.id.toString(),
             customerId: 'customer-2',
         })
 

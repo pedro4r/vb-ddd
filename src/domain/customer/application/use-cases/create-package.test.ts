@@ -20,9 +20,10 @@ describe('Create Package', () => {
         const result = await sut.execute({
             customerId: 'customerId',
             parcelForwardingId: 'parcelForwardingId',
-            addressId: 'addressId',
+            shippingAddressId: 'shippingAddressId',
             checkInsId: ['checkInId1', 'checkInId2'],
             customsDeclarationId: 'customsDeclarationId',
+            taxId: 'taxId',
             hasBattery: true,
         })
 

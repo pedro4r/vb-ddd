@@ -26,7 +26,7 @@ describe('Edit Package', () => {
             packageId: newPkg.id.toString(),
             customerId: newPkg.customerId.toString(),
             parcelForwardingId: newPkg.parcelForwardingId.toString(),
-            addressId: 'address-2',
+            shippingAddressId: 'shippingAddress-2',
             checkInsId: ['checkin-2', 'checkin-3'],
             customsDeclarationId: 'customs-declaration-2',
             hasBattery: true,
@@ -37,9 +37,9 @@ describe('Edit Package', () => {
         expect(inMemoryPackageRepository.items[0].id.toString()).toEqual(
             newPkg.id.toString()
         )
-        expect(inMemoryPackageRepository.items[0].addressId.toString()).toEqual(
-            'address-2'
-        )
+        expect(
+            inMemoryPackageRepository.items[0].shippingAddressId.toString()
+        ).toEqual('shippingAddress-2')
 
         expect(inMemoryPackageRepository.items[0].checkInsId.length).toEqual(2)
     })
@@ -53,7 +53,7 @@ describe('Edit Package', () => {
             packageId: newPkg.id.toString(),
             customerId: 'another-customer-id',
             parcelForwardingId: newPkg.parcelForwardingId.toString(),
-            addressId: 'address-2',
+            shippingAddressId: 'shippingAddress-2',
             checkInsId: ['checkin-2', 'checkin-3'],
             customsDeclarationId: 'customs-declaration-2',
             hasBattery: true,

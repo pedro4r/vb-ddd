@@ -18,7 +18,7 @@ interface EditShippingAddressUseCaseRequest {
     phoneNumber?: string | null
 }
 
-type EditAddressUseCaseResponse = Either<
+type EditShippingAddressUseCaseResponse = Either<
     ResourceNotFoundError | NotAllowedError,
     {
         shippingAddress: ShippingAddress
@@ -39,7 +39,7 @@ export class EditShippingAddressUseCase {
         zipcode,
         country,
         phoneNumber,
-    }: EditShippingAddressUseCaseRequest): Promise<EditAddressUseCaseResponse> {
+    }: EditShippingAddressUseCaseRequest): Promise<EditShippingAddressUseCaseResponse> {
         const shippingAddress =
             await this.shippingAddressRepository.findById(shippingAddressId)
 

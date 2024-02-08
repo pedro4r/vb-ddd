@@ -23,7 +23,6 @@ describe('Edit Shipping Address', () => {
 
         await inMemoryShippingAddressRepository.create(newShippingAddress)
 
-        console.log(inMemoryShippingAddressRepository.items)
         await sut.execute({
             shippingAddressId: newShippingAddress.id.toString(),
             customerId: newShippingAddress.customerId.toString(),

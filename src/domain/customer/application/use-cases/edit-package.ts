@@ -9,7 +9,7 @@ interface EditPackagesRequest {
     packageId: string
     customerId: string
     parcelForwardingId: string
-    addressId: string
+    shippingAddressId: string
     checkInsId: string[]
     customsDeclarationId: string
     hasBattery: boolean
@@ -29,7 +29,7 @@ export class EditPackagesUseCase {
         packageId,
         customerId,
         parcelForwardingId,
-        addressId,
+        shippingAddressId,
         checkInsId,
         customsDeclarationId,
         hasBattery,
@@ -48,7 +48,7 @@ export class EditPackagesUseCase {
             {
                 customerId: new UniqueEntityID(customerId),
                 parcelForwardingId: new UniqueEntityID(parcelForwardingId),
-                addressId: new UniqueEntityID(addressId),
+                shippingAddressId: new UniqueEntityID(shippingAddressId),
                 checkInsId: checkInsId.map((id) => new UniqueEntityID(id)),
                 customsDeclarationId: new UniqueEntityID(customsDeclarationId),
                 hasBattery,
