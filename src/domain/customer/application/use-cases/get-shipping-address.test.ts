@@ -36,7 +36,7 @@ describe('Get a Shipping Address', () => {
         })
     })
 
-    it.skip('should be able to get a shipping address from another customer', async () => {
+    it('should be able to get a shipping address from another customer', async () => {
         const shippingAddress = makeShippingAddress(
             {
                 customerId: new UniqueEntityID('customer-1'),

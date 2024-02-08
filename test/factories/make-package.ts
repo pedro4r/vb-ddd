@@ -12,9 +12,10 @@ export function makePackage(
         {
             customerId: new UniqueEntityID('customer-1'),
             parcelForwardingId: new UniqueEntityID('parcel-forwarding-1'),
-            addressId: new UniqueEntityID('shipping-address-1'),
+            shippingAddressId: new UniqueEntityID('shipping-address-1'),
             checkInsId: [new UniqueEntityID('checkin-1')],
             customsDeclarationId: new UniqueEntityID('customs-declaration-1'),
+            taxId: new UniqueEntityID('tax-1'),
             hasBattery: false,
             ...override,
         },

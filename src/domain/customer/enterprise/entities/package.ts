@@ -7,9 +7,10 @@ export interface PackageProps {
     customerId: UniqueEntityID
     parcelForwardingId: UniqueEntityID
     freightProviderId?: UniqueEntityID | null
-    addressId: UniqueEntityID
+    shippingAddressId: UniqueEntityID
     checkInsId: UniqueEntityID[]
     customsDeclarationId?: UniqueEntityID
+    taxId?: UniqueEntityID | null
     weight?: number | null
     hasBattery: boolean
     trackingNumber?: string | null
@@ -36,12 +37,12 @@ export class Package extends AggregateRoot<PackageProps> {
         this.touch()
     }
 
-    get addressId() {
-        return this.props.addressId
+    get shippingAddressId() {
+        return this.props.shippingAddressId
     }
 
-    set addressId(id: UniqueEntityID) {
-        this.props.addressId = id
+    set shippingAddressId(id: UniqueEntityID) {
+        this.props.shippingAddressId = id
         this.touch()
     }
 
@@ -60,6 +61,15 @@ export class Package extends AggregateRoot<PackageProps> {
 
     set customsDeclarationId(id: UniqueEntityID | undefined) {
         this.props.customsDeclarationId = id
+        this.touch()
+    }
+
+    get taxId() {
+        return this.props.taxId
+    }
+
+    set taxId(id: UniqueEntityID | undefined | null) {
+        this.props.taxId = id
         this.touch()
     }
 

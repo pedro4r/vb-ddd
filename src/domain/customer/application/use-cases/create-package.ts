@@ -6,9 +6,10 @@ import { PackageRepository } from '../repositories/package-repository'
 interface CreatePackageUseCaseRequest {
     customerId: string
     parcelForwardingId: string
-    addressId: string
+    shippingAddressId: string
     checkInsId: string[]
     customsDeclarationId: string
+    taxId?: string
     hasBattery: boolean
 }
 
@@ -25,17 +26,19 @@ export class CreatePackageUseCase {
     async execute({
         customerId,
         parcelForwardingId,
-        addressId,
+        shippingAddressId,
         checkInsId,
         customsDeclarationId,
+        taxId,
         hasBattery,
     }: CreatePackageUseCaseRequest): Promise<CreatePackageUseCaseResponse> {
         const pkg = Package.create({
             customerId: new UniqueEntityID(customerId),
             parcelForwardingId: new UniqueEntityID(parcelForwardingId),
-            addressId: new UniqueEntityID(addressId),
+            shippingAddressId: new UniqueEntityID(shippingAddressId),
             checkInsId: checkInsId.map((id) => new UniqueEntityID(id)),
             customsDeclarationId: new UniqueEntityID(customsDeclarationId),
+            taxId: taxId ? new UniqueEntityID(taxId) : null,
             hasBattery,
         })
 

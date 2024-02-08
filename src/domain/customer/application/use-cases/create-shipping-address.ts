@@ -4,7 +4,7 @@ import { Address } from '@/core/value-objects/address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { ShippingAddress } from '../../enterprise/entities/shipping-address'
 
-interface CreateAddressUseCaseRequest {
+interface CreateShippingAddressUseCaseRequest {
     customerId: string
     recipientName: string
     address: string
@@ -16,7 +16,7 @@ interface CreateAddressUseCaseRequest {
     phoneNumber?: string | null
 }
 
-type CreateAddressUseCaseResponse = Either<
+type CreateShippingAddressUseCaseResponse = Either<
     null,
     {
         shippingAddress: ShippingAddress
@@ -36,7 +36,7 @@ export class CreateShippingAddressUseCase {
         zipcode,
         country,
         phoneNumber,
-    }: CreateAddressUseCaseRequest): Promise<CreateAddressUseCaseResponse> {
+    }: CreateShippingAddressUseCaseRequest): Promise<CreateShippingAddressUseCaseResponse> {
         const addressInfo = new Address({
             address,
             complement,

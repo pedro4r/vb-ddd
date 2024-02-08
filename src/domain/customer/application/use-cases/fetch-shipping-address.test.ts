@@ -26,7 +26,7 @@ describe('Get a Shipping Address', () => {
             {
                 customerId: new UniqueEntityID('customer-1'),
             },
-            new UniqueEntityID('address-2')
+            new UniqueEntityID('shippingAddress-2')
         )
 
         const shippingAddress3 = makeShippingAddress(
@@ -63,7 +63,7 @@ describe('Get a Shipping Address', () => {
             {
                 customerId: new UniqueEntityID('customer-1'),
             },
-            new UniqueEntityID('address-2')
+            new UniqueEntityID('shippingAddress-2')
         )
 
         inMemoryShippingAddressRepository.items.push(shippingAddress1)
