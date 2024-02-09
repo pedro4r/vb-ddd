@@ -1,13 +1,28 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { HubId } from './value-objects/hub-id'
 
 export interface CustomerProps {
+    parcelForwardingId: UniqueEntityID
+    hubId?: HubId | null
     name: string
     email: string
     password: string
 }
 
 export class Customer extends Entity<CustomerProps> {
+    get parcelForwardingId() {
+        return this.props.parcelForwardingId
+    }
+
+    get hubId() {
+        return this.props.hubId
+    }
+
+    set hubId(hubId: HubId | null | undefined) {
+        this.props.hubId = hubId
+    }
+
     get name() {
         return this.props.name
     }

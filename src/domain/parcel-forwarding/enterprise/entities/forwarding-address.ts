@@ -3,14 +3,14 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/opitional'
 import { Address } from '@/core/value-objects/address'
 
-export interface ForwardingAddressProps {
+export interface ParcelForwardingAddressProps {
     parcelForwardingId: UniqueEntityID
     address: Address
     createdAt: Date
     updatedAt?: Date | null
 }
 
-export class ForwardingAddress extends Entity<ForwardingAddressProps> {
+export class ParcelForwardingAddress extends Entity<ParcelForwardingAddressProps> {
     get parcelForwardingId() {
         return this.props.parcelForwardingId
     }
@@ -37,10 +37,10 @@ export class ForwardingAddress extends Entity<ForwardingAddressProps> {
     }
 
     static create(
-        props: Optional<ForwardingAddressProps, 'createdAt'>,
+        props: Optional<ParcelForwardingAddressProps, 'createdAt'>,
         id?: UniqueEntityID
     ) {
-        const forwardingAddress = new ForwardingAddress(
+        const parcelForwardingAddress = new ParcelForwardingAddress(
             {
                 ...props,
                 createdAt: props.createdAt ?? new Date(),
@@ -48,6 +48,6 @@ export class ForwardingAddress extends Entity<ForwardingAddressProps> {
             id
         )
 
-        return forwardingAddress
+        return parcelForwardingAddress
     }
 }

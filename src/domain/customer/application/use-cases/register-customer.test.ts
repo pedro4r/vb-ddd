@@ -1,5 +1,4 @@
 import { FakeHasher } from 'test/cryptography/fake-hasher'
-import { InMemoryParcelsForwardingRepository } from 'test/repositories/in-memory-parcel-forwarding-repository'
 import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customer-repository'
 import { RegisterCustomerUseCase } from './register-customer'
 
@@ -10,7 +9,7 @@ let sut: RegisterCustomerUseCase
 
 describe('Register Customer', () => {
     beforeEach(() => {
-        inMemoryCustomerRepository = new InMemoryParcelsForwardingRepository()
+        inMemoryCustomerRepository = new InMemoryCustomersRepository()
         fakeHasher = new FakeHasher()
 
         sut = new RegisterCustomerUseCase(
@@ -21,6 +20,7 @@ describe('Register Customer', () => {
 
     it('should be able to register a new customer', async () => {
         const result = await sut.execute({
+            parcelForwardingId: '1',
             name: 'Pedro Requiao',
             email: 'pedro@example.com',
             password: '123456',
@@ -34,6 +34,7 @@ describe('Register Customer', () => {
 
     it('should hash customer password upon registration', async () => {
         const result = await sut.execute({
+            parcelForwardingId: '1',
             name: 'Pedro Requiao',
             email: 'pedro@example.com',
             password: '123456',

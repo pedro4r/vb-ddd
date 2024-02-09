@@ -11,6 +11,7 @@ export function makeCustomer(
 ) {
     const student = Customer.create(
         {
+            parcelForwardingId: new UniqueEntityID(),
             name: faker.person.fullName(),
             email: faker.internet.email(),
             password: faker.internet.password(),

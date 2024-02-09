@@ -1,15 +1,23 @@
-import { ForwardingAddress } from '../../enterprise/entities/forwarding-address'
+import { ParcelForwardingAddress } from '../../enterprise/entities/forwarding-address'
 
-export abstract class ForwardingAddressRepository {
+export abstract class ParcelForwardingAddressRepository {
     abstract findManyByParcelForwardingId(
         parcelForwardingId: string
-    ): Promise<ForwardingAddress[] | null>
+    ): Promise<ParcelForwardingAddress[] | null>
 
     abstract findById(
-        ForwardingAddressId: string
-    ): Promise<ForwardingAddress | null>
+        ParcelForwardingAddressId: string
+    ): Promise<ParcelForwardingAddress | null>
 
-    abstract create(ForwardingAddress: ForwardingAddress): Promise<void>
-    abstract save(ForwardingAddress: ForwardingAddress): Promise<void>
-    abstract delete(ForwardingAddress: ForwardingAddress): Promise<void>
+    abstract create(
+        ParcelForwardingAddress: ParcelForwardingAddress
+    ): Promise<void>
+
+    abstract save(
+        ParcelForwardingAddress: ParcelForwardingAddress
+    ): Promise<void>
+
+    abstract delete(
+        ParcelForwardingAddress: ParcelForwardingAddress
+    ): Promise<void>
 }

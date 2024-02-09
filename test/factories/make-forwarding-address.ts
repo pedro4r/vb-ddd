@@ -1,15 +1,15 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import {
-    ForwardingAddress,
-    ForwardingAddressProps,
+    ParcelForwardingAddress,
+    ParcelForwardingAddressProps,
 } from '@/domain/parcel-forwarding/enterprise/entities/forwarding-address'
 import { makeAddress } from './make-address'
 
-export function makeForwardingAddress(
-    override: Partial<ForwardingAddressProps> = {},
+export function makeParcelForwardingAddress(
+    override: Partial<ParcelForwardingAddressProps> = {},
     id?: UniqueEntityID
 ) {
-    const forwardingAddress = ForwardingAddress.create(
+    const parcelForwardingAddress = ParcelForwardingAddress.create(
         {
             parcelForwardingId: new UniqueEntityID(),
             address: makeAddress(),
@@ -18,5 +18,5 @@ export function makeForwardingAddress(
         id
     )
 
-    return forwardingAddress
+    return parcelForwardingAddress
 }
