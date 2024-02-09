@@ -43,7 +43,6 @@ export class DomainEvents {
 
     public static dispatchEventsForAggregate(id: UniqueEntityID) {
         const aggregate = this.findMarkedAggregateByID(id)
-
         if (aggregate) {
             this.dispatchAggregateEvents(aggregate)
             aggregate.clearEvents()

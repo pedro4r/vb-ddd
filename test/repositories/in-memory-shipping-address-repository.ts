@@ -1,6 +1,6 @@
 import { ShippingAddressRepository } from '@/domain/customer/application/repositories/shipping-address-repository'
 import { ShippingAddress } from '@/domain/customer/enterprise/entities/shipping-address'
-import { InMemoryCustomersRepository } from './in-memory-customer-repository'
+import { DomainEvents } from '@/core/events/domain-events'
 
 export class InMemoryShippingAddressRepository
     implements ShippingAddressRepository
@@ -33,6 +33,14 @@ export class InMemoryShippingAddressRepository
 
     async create(shippingAddress: ShippingAddress) {
         this.items.push(shippingAddress)
+        const shippingAddresses = this.items.filter(
+            (item) =>
+                item.customerId.toString() ===
+                shippingAddress.customerId.toString()
+        )
+        if (shippingAddresses.length === 1) {
+            DomainEvents.dispatchEventsForAggregate(shippingAddress.id)
+        }
     }
 
     async save(shippingAddress: ShippingAddress) {

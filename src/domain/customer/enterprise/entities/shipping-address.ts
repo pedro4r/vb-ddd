@@ -1,7 +1,8 @@
-import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/opitional'
 import { Address } from '@/core/value-objects/address'
+import { FirstShippingAddressCreatedEvent } from '../events/first-address-created-event'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
 
 export interface ShippingAddressProps {
     customerId: UniqueEntityID
@@ -11,7 +12,7 @@ export interface ShippingAddressProps {
     updatedAt?: Date | null
 }
 
-export class ShippingAddress extends Entity<ShippingAddressProps> {
+export class ShippingAddress extends AggregateRoot<ShippingAddressProps> {
     get customerId() {
         return this.props.customerId
     }
@@ -57,6 +58,14 @@ export class ShippingAddress extends Entity<ShippingAddressProps> {
             },
             id
         )
+
+        const isNewShippingAddress = !id
+
+        if (isNewShippingAddress) {
+            shippingAddress.addDomainEvent(
+                new FirstShippingAddressCreatedEvent(shippingAddress)
+            )
+        }
 
         return shippingAddress
     }
