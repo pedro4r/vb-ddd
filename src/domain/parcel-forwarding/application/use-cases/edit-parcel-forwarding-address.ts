@@ -1,13 +1,13 @@
 import { Either, left, right } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { ForwardingAddress } from '../../enterprise/entities/forwarding-address'
-import { ForwardingAddressRepository } from '../repositories/forwarding-address-repository'
+import { ParcelForwardingAddress } from '../../enterprise/entities/forwarding-address'
+import { ParcelForwardingAddressRepository } from '../repositories/forwarding-address-repository'
 import { Address } from '@/core/value-objects/address'
 
-interface EditForwardingAddressUseCaseRequest {
+interface EditParcelForwardingAddressUseCaseRequest {
     parcelForwardingId: string
-    forwardingAddressId: string
+    parcelForwardingAddressId: string
     address: string
     complement?: string | null
     city: string
@@ -17,21 +17,21 @@ interface EditForwardingAddressUseCaseRequest {
     phoneNumber?: string | null
 }
 
-type EditForwardingAddressUseCaseResponse = Either<
+type EditParcelForwardingAddressUseCaseResponse = Either<
     ResourceNotFoundError | NotAllowedError,
     {
-        forwardingAddress: ForwardingAddress
+        parcelForwardingAddress: ParcelForwardingAddress
     }
 >
 
-export class EditForwardingAddressUseCase {
+export class EditParcelForwardingAddressUseCase {
     constructor(
-        private forwardingAddressRepository: ForwardingAddressRepository
+        private parcelForwardingAddressRepository: ParcelForwardingAddressRepository
     ) {}
 
     async execute({
         parcelForwardingId,
-        forwardingAddressId,
+        parcelForwardingAddressId,
         address,
         complement,
         city,
@@ -39,17 +39,19 @@ export class EditForwardingAddressUseCase {
         zipcode,
         country,
         phoneNumber,
-    }: EditForwardingAddressUseCaseRequest): Promise<EditForwardingAddressUseCaseResponse> {
-        const forwardingAddress =
-            await this.forwardingAddressRepository.findById(forwardingAddressId)
+    }: EditParcelForwardingAddressUseCaseRequest): Promise<EditParcelForwardingAddressUseCaseResponse> {
+        const parcelForwardingAddress =
+            await this.parcelForwardingAddressRepository.findById(
+                parcelForwardingAddressId
+            )
 
-        if (!forwardingAddress) {
+        if (!parcelForwardingAddress) {
             return left(new ResourceNotFoundError())
         }
 
         if (
             parcelForwardingId !==
-            forwardingAddress.parcelForwardingId.toString()
+            parcelForwardingAddress.parcelForwardingId.toString()
         ) {
             return left(new NotAllowedError())
         }
@@ -64,12 +66,14 @@ export class EditForwardingAddressUseCase {
             phoneNumber,
         })
 
-        forwardingAddress.address = newAddress
+        parcelForwardingAddress.address = newAddress
 
-        await this.forwardingAddressRepository.save(forwardingAddress)
+        await this.parcelForwardingAddressRepository.save(
+            parcelForwardingAddress
+        )
 
         return right({
-            forwardingAddress,
+            parcelForwardingAddress,
         })
     }
 }

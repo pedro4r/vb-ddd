@@ -1,10 +1,10 @@
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 import { AuthenticateCustomerUseCase } from './authenticate-customer'
 import { FakeEncrypter } from 'test/cryptography/fake-encrypter'
-import { InMemoryParcelsForwardingRepository } from 'test/repositories/in-memory-parcel-forwarding-repository'
 import { makeCustomer } from 'test/factories/make-customer'
+import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customer-repository'
 
-let inMemoryParcelsForwardingRepository: InMemoryParcelsForwardingRepository
+let inMemoryCustomersRepository: InMemoryCustomersRepository
 let fakeHasher: FakeHasher
 let encrypter: FakeEncrypter
 
@@ -12,13 +12,12 @@ let sut: AuthenticateCustomerUseCase
 
 describe('Authenticate Parcel Forwarding', () => {
     beforeEach(() => {
-        inMemoryParcelsForwardingRepository =
-            new InMemoryParcelsForwardingRepository()
+        inMemoryCustomersRepository = new InMemoryCustomersRepository()
         fakeHasher = new FakeHasher()
         encrypter = new FakeEncrypter()
 
         sut = new AuthenticateCustomerUseCase(
-            inMemoryParcelsForwardingRepository,
+            inMemoryCustomersRepository,
             fakeHasher,
             encrypter
         )
@@ -30,7 +29,7 @@ describe('Authenticate Parcel Forwarding', () => {
             password: await fakeHasher.hash('123456'),
         })
 
-        inMemoryParcelsForwardingRepository.items.push(customer)
+        inMemoryCustomersRepository.items.push(customer)
 
         const result = await sut.execute({
             email: 'johndoe@example.com',

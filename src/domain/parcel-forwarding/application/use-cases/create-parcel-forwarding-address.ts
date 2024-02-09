@@ -1,10 +1,10 @@
 import { Either, right } from '@/core/either'
-import { ForwardingAddress } from '../../enterprise/entities/forwarding-address'
-import { ForwardingAddressRepository } from '../repositories/forwarding-address-repository'
+import { ParcelForwardingAddress } from '../../enterprise/entities/forwarding-address'
+import { ParcelForwardingAddressRepository } from '../repositories/forwarding-address-repository'
 import { Address } from '@/core/value-objects/address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-interface CreateForwardingAddressUseCaseRequest {
+interface CreateParcelForwardingAddressUseCaseRequest {
     parcelForwardingId: string
     address: string
     complement?: string | null
@@ -15,16 +15,16 @@ interface CreateForwardingAddressUseCaseRequest {
     phoneNumber?: string | null
 }
 
-type CreateForwardingAddressUseCaseResponse = Either<
+type CreateParcelForwardingAddressUseCaseResponse = Either<
     null,
     {
-        forwardingAddress: ForwardingAddress
+        parcelForwardingAddress: ParcelForwardingAddress
     }
 >
 
-export class CreateForwardingAddressUseCase {
+export class CreateParcelForwardingAddressUseCase {
     constructor(
-        private forwardingAddressRepository: ForwardingAddressRepository
+        private parcelForwardingAddressRepository: ParcelForwardingAddressRepository
     ) {}
 
     async execute({
@@ -36,7 +36,7 @@ export class CreateForwardingAddressUseCase {
         zipcode,
         country,
         phoneNumber,
-    }: CreateForwardingAddressUseCaseRequest): Promise<CreateForwardingAddressUseCaseResponse> {
+    }: CreateParcelForwardingAddressUseCaseRequest): Promise<CreateParcelForwardingAddressUseCaseResponse> {
         const addressInfo = new Address({
             address,
             complement,
@@ -47,15 +47,17 @@ export class CreateForwardingAddressUseCase {
             phoneNumber,
         })
 
-        const forwardingAddress = ForwardingAddress.create({
+        const parcelForwardingAddress = ParcelForwardingAddress.create({
             parcelForwardingId: new UniqueEntityID(parcelForwardingId),
             address: addressInfo,
         })
 
-        await this.forwardingAddressRepository.create(forwardingAddress)
+        await this.parcelForwardingAddressRepository.create(
+            parcelForwardingAddress
+        )
 
         return right({
-            forwardingAddress,
+            parcelForwardingAddress,
         })
     }
 }

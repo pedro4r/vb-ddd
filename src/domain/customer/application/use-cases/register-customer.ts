@@ -3,8 +3,10 @@ import { UserAlreadyExistsError } from '@/core/errors/errors/user-already-exists
 import { Customer } from '../../enterprise/entities/customer'
 import { CustomerRepository } from '../repositories/customer-repository'
 import { HashGenerator } from '@/core/cryptography/hash-generator'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 interface RegisterCustomerUseCaseRequest {
+    parcelForwardingId: string
     name: string
     email: string
     password: string
@@ -24,6 +26,7 @@ export class RegisterCustomerUseCase {
     ) {}
 
     async execute({
+        parcelForwardingId,
         name,
         email,
         password,
@@ -38,6 +41,7 @@ export class RegisterCustomerUseCase {
         const hashedPassword = await this.hashGenerator.hash(password)
 
         const customer = Customer.create({
+            parcelForwardingId: new UniqueEntityID(parcelForwardingId),
             name,
             email,
             password: hashedPassword,

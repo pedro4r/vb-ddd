@@ -1,34 +1,36 @@
-import { InMemoryForwardingAddressRepository } from 'test/repositories/in-memory-forwarding-address-repository'
-import { EditForwardingAddressUseCase } from './edit-forwarding-address'
+import { InMemoryParcelForwardingAddressRepository } from 'test/repositories/in-memory-parcel-forwarding-address-repository'
+import { EditParcelForwardingAddressUseCase } from './edit-parcel-forwarding-address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { makeForwardingAddress } from 'test/factories/make-forwarding-address'
+import { makeParcelForwardingAddress } from 'test/factories/make-forwarding-address'
 
-let inMemoryForwardingAddressRepository: InMemoryForwardingAddressRepository
-let sut: EditForwardingAddressUseCase
+let inMemoryParcelForwardingAddressRepository: InMemoryParcelForwardingAddressRepository
+let sut: EditParcelForwardingAddressUseCase
 
 describe('Edit Forwarding Address', () => {
     beforeEach(() => {
-        inMemoryForwardingAddressRepository =
-            new InMemoryForwardingAddressRepository()
-        sut = new EditForwardingAddressUseCase(
-            inMemoryForwardingAddressRepository
+        inMemoryParcelForwardingAddressRepository =
+            new InMemoryParcelForwardingAddressRepository()
+        sut = new EditParcelForwardingAddressUseCase(
+            inMemoryParcelForwardingAddressRepository
         )
     })
 
     it('should be able to edit a forwarding address', async () => {
-        const newForwardingAddress = makeForwardingAddress(
+        const newParcelForwardingAddress = makeParcelForwardingAddress(
             {
                 parcelForwardingId: new UniqueEntityID('parcel-forwarding-1'),
             },
             new UniqueEntityID('forwarding-address-1')
         )
 
-        await inMemoryForwardingAddressRepository.create(newForwardingAddress)
+        await inMemoryParcelForwardingAddressRepository.create(
+            newParcelForwardingAddress
+        )
 
         await sut.execute({
-            forwardingAddressId: newForwardingAddress.id.toString(),
+            parcelForwardingAddressId: newParcelForwardingAddress.id.toString(),
             parcelForwardingId:
-                newForwardingAddress.parcelForwardingId.toString(),
+                newParcelForwardingAddress.parcelForwardingId.toString(),
             address: 'New address',
             complement: 'New complement',
             city: 'New city',
@@ -39,24 +41,26 @@ describe('Edit Forwarding Address', () => {
         })
 
         expect(
-            inMemoryForwardingAddressRepository.items[0].address
+            inMemoryParcelForwardingAddressRepository.items[0].address
         ).toMatchObject({
             zipcode: 'New zipcode',
         })
     })
 
     it('should be able to edit a forwarding address from another parcel forwarding', async () => {
-        const newForwardingAddress = makeForwardingAddress(
+        const newParcelForwardingAddress = makeParcelForwardingAddress(
             {
                 parcelForwardingId: new UniqueEntityID('parcel-forwarding-1'),
             },
             new UniqueEntityID('forwarding-address-1')
         )
 
-        await inMemoryForwardingAddressRepository.create(newForwardingAddress)
+        await inMemoryParcelForwardingAddressRepository.create(
+            newParcelForwardingAddress
+        )
 
         const result = await sut.execute({
-            forwardingAddressId: newForwardingAddress.id.toString(),
+            parcelForwardingAddressId: newParcelForwardingAddress.id.toString(),
             parcelForwardingId: 'another-customer-id',
             address: 'New address',
             complement: 'New complement',

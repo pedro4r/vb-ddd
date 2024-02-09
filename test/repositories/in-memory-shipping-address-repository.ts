@@ -1,5 +1,6 @@
 import { ShippingAddressRepository } from '@/domain/customer/application/repositories/shipping-address-repository'
 import { ShippingAddress } from '@/domain/customer/enterprise/entities/shipping-address'
+import { InMemoryCustomersRepository } from './in-memory-customer-repository'
 
 export class InMemoryShippingAddressRepository
     implements ShippingAddressRepository
@@ -30,8 +31,8 @@ export class InMemoryShippingAddressRepository
         return address
     }
 
-    async create(shippingAddressId: ShippingAddress) {
-        this.items.push(shippingAddressId)
+    async create(shippingAddress: ShippingAddress) {
+        this.items.push(shippingAddress)
     }
 
     async save(shippingAddress: ShippingAddress) {
