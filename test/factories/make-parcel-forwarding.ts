@@ -12,6 +12,7 @@ export function makeParcelForwarding(
     const student = ParcelForwarding.create(
         {
             name: faker.company.buzzNoun(),
+            initials: faker.string.fromCharacters('ABCDEF', 3),
             email: faker.internet.email(),
             password: faker.internet.password(),
             ...override,

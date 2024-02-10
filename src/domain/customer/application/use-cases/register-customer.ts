@@ -4,6 +4,8 @@ import { Customer } from '../../enterprise/entities/customer'
 import { CustomerRepository } from '../repositories/customer-repository'
 import { HashGenerator } from '@/core/cryptography/hash-generator'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { ParcelForwardingRepository } from '@/domain/parcel-forwarding/application/repositories/parcel-forwarding-repository'
+import { HubId } from '../../enterprise/entities/value-objects/hub-id'
 
 interface RegisterCustomerUseCaseRequest {
     parcelForwardingId: string
@@ -22,8 +24,31 @@ type RegisterCustomerUseCaseResponse = Either<
 export class RegisterCustomerUseCase {
     constructor(
         private customersRepository: CustomerRepository,
+        private parcelForwardingRepository: ParcelForwardingRepository,
         private hashGenerator: HashGenerator
     ) {}
+
+    private async prepareHubId(parcelForwardingId: string): Promise<HubId> {
+        let creatingCustomerCode =
+            await this.customersRepository.countParcelForwardingCustomers(
+                parcelForwardingId
+            )
+        creatingCustomerCode
+            ? creatingCustomerCode++
+            : (creatingCustomerCode = 1)
+
+        const parcelForwarding =
+            await this.parcelForwardingRepository.findById(parcelForwardingId)
+
+        if (!parcelForwarding) {
+            throw new Error('Parcel forwarding not found')
+        }
+
+        return HubId.create({
+            parcelForwadingInitials: parcelForwarding.initials,
+            customerCode: creatingCustomerCode,
+        })
+    }
 
     async execute({
         parcelForwardingId,
@@ -40,8 +65,11 @@ export class RegisterCustomerUseCase {
 
         const hashedPassword = await this.hashGenerator.hash(password)
 
+        this.prepareHubId(parcelForwardingId)
+
         const customer = Customer.create({
             parcelForwardingId: new UniqueEntityID(parcelForwardingId),
+            hubId: await this.prepareHubId(parcelForwardingId),
             name,
             email,
             password: hashedPassword,

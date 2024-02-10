@@ -67,7 +67,7 @@ describe('Delete an Address', () => {
         ).toBeTruthy()
     })
 
-    it('not should be able to delete a shipping address from another customer', async () => {
+    it('should not be able to delete a shipping address from another customer', async () => {
         const address = makeShippingAddress(
             {
                 customerId: new UniqueEntityID('customer-1'),

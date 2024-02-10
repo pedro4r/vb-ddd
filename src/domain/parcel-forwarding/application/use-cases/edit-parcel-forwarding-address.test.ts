@@ -47,7 +47,7 @@ describe('Edit Forwarding Address', () => {
         })
     })
 
-    it('should be able to edit a forwarding address from another parcel forwarding', async () => {
+    it('should not be able to edit a forwarding address from another parcel forwarding', async () => {
         const newParcelForwardingAddress = makeParcelForwardingAddress(
             {
                 parcelForwardingId: new UniqueEntityID('parcel-forwarding-1'),

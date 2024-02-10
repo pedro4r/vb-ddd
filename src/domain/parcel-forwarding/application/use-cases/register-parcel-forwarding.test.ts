@@ -1,8 +1,8 @@
 import { FakeHasher } from 'test/cryptography/fake-hasher'
-import { InMemoryParcelsForwardingRepository } from 'test/repositories/in-memory-parcel-forwarding-repository'
+import { InMemoryParcelForwardingRepository } from 'test/repositories/in-memory-parcel-forwarding-repository'
 import { RegisterParcelForwardingUseCase } from './register-parcel-forwarding'
 
-let inMemoryParcelForwardingRepository: InMemoryParcelsForwardingRepository
+let inMemoryParcelForwardingRepository: InMemoryParcelForwardingRepository
 let fakeHasher: FakeHasher
 
 let sut: RegisterParcelForwardingUseCase
@@ -10,7 +10,7 @@ let sut: RegisterParcelForwardingUseCase
 describe('Register Parcel Forwarding', () => {
     beforeEach(() => {
         inMemoryParcelForwardingRepository =
-            new InMemoryParcelsForwardingRepository()
+            new InMemoryParcelForwardingRepository()
         fakeHasher = new FakeHasher()
 
         sut = new RegisterParcelForwardingUseCase(
@@ -22,6 +22,7 @@ describe('Register Parcel Forwarding', () => {
     it('should be able to register a new parcel forwarding', async () => {
         const result = await sut.execute({
             name: 'Voabox',
+            initials: 'VX',
             email: 'voabox@example.com',
             password: '123456',
         })
@@ -35,6 +36,7 @@ describe('Register Parcel Forwarding', () => {
     it('should hash parcel forwarding password upon registration', async () => {
         const result = await sut.execute({
             name: 'Voabox',
+            initials: 'VX',
             email: 'voabox@example.com',
             password: '123456',
         })

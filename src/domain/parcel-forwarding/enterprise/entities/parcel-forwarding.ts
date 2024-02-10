@@ -3,6 +3,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 export interface ParcelForwardingProps {
     name: string
+    initials: string
     email: string
     password: string
 }
@@ -10,6 +11,10 @@ export interface ParcelForwardingProps {
 export class ParcelForwarding extends Entity<ParcelForwardingProps> {
     get name() {
         return this.props.name
+    }
+
+    get initials() {
+        return this.props.initials
     }
 
     get email() {

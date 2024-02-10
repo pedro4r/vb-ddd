@@ -6,6 +6,7 @@ import { UserAlreadyExistsError } from '@/core/errors/errors/user-already-exists
 
 interface RegisterParcelForwardingUseCaseRequest {
     name: string
+    initials: string
     email: string
     password: string
 }
@@ -25,6 +26,7 @@ export class RegisterParcelForwardingUseCase {
 
     async execute({
         name,
+        initials,
         email,
         password,
     }: RegisterParcelForwardingUseCaseRequest): Promise<RegisterParcelForwardingUseCaseResponse> {
@@ -39,6 +41,7 @@ export class RegisterParcelForwardingUseCase {
 
         const parcelforwarding = ParcelForwarding.create({
             name,
+            initials,
             email,
             password: hashedPassword,
         })
