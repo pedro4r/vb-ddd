@@ -4,9 +4,12 @@ import { InMemoryParcelForwardingAddressRepository } from 'test/repositories/in-
 import { InMemoryCustomerRepository } from 'test/repositories/in-memory-customer-repository'
 import { makeParcelForwardingAddress } from 'test/factories/make-forwarding-address'
 import { makeCustomer } from 'test/factories/make-customer'
+import { InMemoryShippingAddressRepository } from 'test/repositories/in-memory-shipping-address-repository'
+import { makeShippingAddress } from 'test/factories/make-shipping-address'
 
 let inMemoryCustomerRepository: InMemoryCustomerRepository
 let inMemoryParcelForwardingAddressRepository: InMemoryParcelForwardingAddressRepository
+let inMemoryShippingAddressRepository: InMemoryShippingAddressRepository
 let sut: GetHubAddressUseCase
 
 describe('Get Hub Address', () => {
@@ -15,13 +18,22 @@ describe('Get Hub Address', () => {
         inMemoryParcelForwardingAddressRepository =
             new InMemoryParcelForwardingAddressRepository()
 
+        inMemoryShippingAddressRepository =
+            new InMemoryShippingAddressRepository()
+
         sut = new GetHubAddressUseCase(
             inMemoryCustomerRepository,
-            inMemoryParcelForwardingAddressRepository
+            inMemoryParcelForwardingAddressRepository,
+            inMemoryShippingAddressRepository
         )
     })
 
     it('should be able to get a hub address', async () => {
+        const shippingAddress = makeShippingAddress({
+            customerId: new UniqueEntityID('customer-1'),
+        })
+
+        await inMemoryShippingAddressRepository.create(shippingAddress)
         const parcelForwardingAddress = makeParcelForwardingAddress(
             {
                 parcelForwardingId: new UniqueEntityID('parcel-forwarding-1'),
@@ -71,6 +83,34 @@ describe('Get Hub Address', () => {
     })
 
     it('should not be able to get a hub address from another customer', async () => {
+        const parcelForwardingAddress = makeParcelForwardingAddress(
+            {
+                parcelForwardingId: new UniqueEntityID('parcel-forwarding-1'),
+            },
+            new UniqueEntityID('forwarding-address-1')
+        )
+
+        inMemoryParcelForwardingAddressRepository.items.push(
+            parcelForwardingAddress
+        )
+
+        const customer = makeCustomer(
+            {
+                parcelForwardingId: new UniqueEntityID('parcel-forwarding-1'),
+            },
+            new UniqueEntityID('customer-1')
+        )
+
+        inMemoryCustomerRepository.items.push(customer)
+
+        const result = await sut.execute({
+            customerId: 'customer-2',
+        })
+
+        expect(result.isLeft()).toBeTruthy()
+    })
+
+    it('should not be able to get a hub address with no shipping address created', async () => {
         const parcelForwardingAddress = makeParcelForwardingAddress(
             {
                 parcelForwardingId: new UniqueEntityID('parcel-forwarding-1'),

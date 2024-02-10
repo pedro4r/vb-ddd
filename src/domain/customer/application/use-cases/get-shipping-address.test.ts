@@ -4,6 +4,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { GetShippingAddressUseCase } from './get-shipping-address'
 
 let inMemoryShippingAddressRepository: InMemoryShippingAddressRepository
+
 let sut: GetShippingAddressUseCase
 
 describe('Get a Shipping Address', () => {
