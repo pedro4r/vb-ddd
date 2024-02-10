@@ -43,7 +43,7 @@ describe('Edit Shipping Address', () => {
         })
     })
 
-    it('should be able to edit a shipping address from another customer', async () => {
+    it('should not be able to edit a shipping address from another customer', async () => {
         const newShippingAddress = makeShippingAddress(
             {
                 customerId: new UniqueEntityID('customer-1'),

@@ -6,16 +6,16 @@ export class InMemoryParcelForwardingAddressRepository
 {
     public items: ParcelForwardingAddress[] = []
 
-    async findManyByParcelForwardingId(parcelForwardingId: string) {
-        const parcelForwardingAddresses = this.items.filter(
+    async findByParcelForwardingId(parcelForwardingId: string) {
+        const parcelForwardingAddress = this.items.find(
             (item) => item.parcelForwardingId.toString() === parcelForwardingId
         )
 
-        if (parcelForwardingAddresses.length === 0) {
+        if (!parcelForwardingAddress) {
             return null
         }
 
-        return parcelForwardingAddresses
+        return parcelForwardingAddress
     }
 
     async findById(parcelForwardingAddressId: string) {

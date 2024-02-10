@@ -1,9 +1,9 @@
 import { ParcelForwardingAddress } from '../../enterprise/entities/forwarding-address'
 
 export abstract class ParcelForwardingAddressRepository {
-    abstract findManyByParcelForwardingId(
+    abstract findByParcelForwardingId(
         parcelForwardingId: string
-    ): Promise<ParcelForwardingAddress[] | null>
+    ): Promise<ParcelForwardingAddress | null>
 
     abstract findById(
         ParcelForwardingAddressId: string

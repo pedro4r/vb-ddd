@@ -4,7 +4,7 @@ import { Entity } from '@/core/entities/entity'
 
 export interface CustomerProps {
     parcelForwardingId: UniqueEntityID
-    hubId?: HubId | null
+    hubId: HubId
     name: string
     email: string
     password: string
@@ -19,7 +19,7 @@ export class Customer extends Entity<CustomerProps> {
         return this.props.hubId
     }
 
-    set hubId(hubId: HubId | null | undefined) {
+    set hubId(hubId: HubId) {
         this.props.hubId = hubId
     }
 

@@ -1,26 +1,39 @@
 import { FakeHasher } from 'test/cryptography/fake-hasher'
-import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customer-repository'
+import { InMemoryCustomerRepository } from 'test/repositories/in-memory-customer-repository'
 import { RegisterCustomerUseCase } from './register-customer'
+import { InMemoryParcelForwardingRepository } from 'test/repositories/in-memory-parcel-forwarding-repository'
+import { makeParcelForwarding } from 'test/factories/make-parcel-forwarding'
 
-let inMemoryCustomerRepository: InMemoryCustomersRepository
+let inMemoryParcelForwardingRepository: InMemoryParcelForwardingRepository
+let inMemoryCustomerRepository: InMemoryCustomerRepository
 let fakeHasher: FakeHasher
 
 let sut: RegisterCustomerUseCase
 
 describe('Register Customer', () => {
     beforeEach(() => {
-        inMemoryCustomerRepository = new InMemoryCustomersRepository()
+        inMemoryParcelForwardingRepository =
+            new InMemoryParcelForwardingRepository()
+        inMemoryCustomerRepository = new InMemoryCustomerRepository()
         fakeHasher = new FakeHasher()
 
         sut = new RegisterCustomerUseCase(
             inMemoryCustomerRepository,
+            inMemoryParcelForwardingRepository,
             fakeHasher
         )
     })
 
     it('should be able to register a new customer', async () => {
+        const parcelforwarding = makeParcelForwarding({
+            email: 'johndoe@example.com',
+            password: await fakeHasher.hash('123456'),
+        })
+
+        inMemoryParcelForwardingRepository.items.push(parcelforwarding)
+
         const result = await sut.execute({
-            parcelForwardingId: '1',
+            parcelForwardingId: parcelforwarding.id.toString(),
             name: 'Pedro Requiao',
             email: 'pedro@example.com',
             password: '123456',
@@ -33,8 +46,15 @@ describe('Register Customer', () => {
     })
 
     it('should hash customer password upon registration', async () => {
+        const parcelforwarding = makeParcelForwarding({
+            email: 'johndoe@example.com',
+            password: await fakeHasher.hash('123456'),
+        })
+
+        inMemoryParcelForwardingRepository.items.push(parcelforwarding)
+
         const result = await sut.execute({
-            parcelForwardingId: '1',
+            parcelForwardingId: parcelforwarding.id.toString(),
             name: 'Pedro Requiao',
             email: 'pedro@example.com',
             password: '123456',

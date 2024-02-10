@@ -1,17 +1,33 @@
 import { CustomerRepository } from '@/domain/customer/application/repositories/customer-repository'
 import { Customer } from '@/domain/customer/enterprise/entities/customer'
 
-export class InMemoryCustomersRepository implements CustomerRepository {
+export class InMemoryCustomerRepository implements CustomerRepository {
     public items: Customer[] = []
 
-    async findByEmail(email: string) {
-        const student = this.items.find((item) => item.email === email)
+    async countParcelForwardingCustomers(parcelForwardingId: string) {
+        return this.items.filter(
+            (item) => item.parcelForwardingId.toString() === parcelForwardingId
+        ).length
+    }
 
-        if (!student) {
+    async findById(id: string) {
+        const customer = this.items.find((item) => item.id.toString() === id)
+
+        if (!customer) {
             return null
         }
 
-        return student
+        return customer
+    }
+
+    async findByEmail(email: string) {
+        const customer = this.items.find((item) => item.email === email)
+
+        if (!customer) {
+            return null
+        }
+
+        return customer
     }
 
     async create(customer: Customer) {
